@@ -1,3 +1,8 @@
+/*
+ * Funcion principal, nos crea la estructura base con la cual funciona
+ * Fetch, manejamos los errores internamente con tryCatch
+ */
+
 export async function fetchApi(endpoint, options = {}) {
   try {
     const response = await fetch(endpoint, options);
@@ -8,14 +13,27 @@ export async function fetchApi(endpoint, options = {}) {
   }
 }
 
-
+//Creamos una funcion para obtener datos, esta funcion nos sirve para
+//obtener todos los datos o un dato en especifico
+/**
+ * 
+ * @param {*} endpoint // Url a la cuala puntamos para obtner datos
+ * @param {*} options // Solo si deseamos, para obtener un id
+ * @returns 
+ */
 export async function fetchGet(endpoint, options = {}) {
   return await fetchApi(endpoint, options);
 }
 
-export async function fetchPost(endpoint, data, typeMethod) {
+/**
+ *
+ * @param {*} endpoint // url del servidor donde esta la informacion
+ * @param {*} data //la informacionque deseamos enviarle al servidor para guardar
+ * @returns
+ */
+export async function fetchPost(endpoint, data) {
   const options = {
-    method: typeMethod,
+    method: "POST",
     headers: {
       "Content-type": "application/json",
     },
@@ -36,4 +54,3 @@ export async function fetchPut(endpoint, data) {
 
   return await fetchApi(endpoint, options);
 }
-
