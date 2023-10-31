@@ -21,6 +21,7 @@ export async function fetchApi(endpoint, options = {}) {
  * @param {*} options // Solo si deseamos, para obtener un id
  * @returns 
  */
+
 export async function fetchGet(endpoint, options = {}) {
   return await fetchApi(endpoint, options);
 }

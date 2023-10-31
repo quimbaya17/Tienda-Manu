@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import LayoutComponent from "../../components/Layout/LayoutComponent";
 import ItemProducto from "../../components/productos/ItemProduct";
 import { fetchGet } from "../../logic/ApiHelper";
+import { Link } from "react-router-dom";
 
 function ProductsView() {
   const [products, setProducts] = useState([]);
@@ -16,7 +17,10 @@ function ProductsView() {
     <LayoutComponent>
       <div>
         <div className="flex w-full">
-          <h1>Listado de productos</h1>
+          <div className="float-right">
+            <Link className="p-2 bg-green-400 float-right mt-4" to="/CreateProduct">Crear producto</Link>
+          </div>
+
           <div className="grid gap-4 grid-cols-4 w-full max-w-screen-lg">
             {products?.map((product) => (
               <ItemProducto
