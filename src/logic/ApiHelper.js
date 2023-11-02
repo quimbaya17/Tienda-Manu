@@ -16,10 +16,10 @@ export async function fetchApi(endpoint, options = {}) {
 //Creamos una funcion para obtener datos, esta funcion nos sirve para
 //obtener todos los datos o un dato en especifico
 /**
- * 
+ *
  * @param {*} endpoint // Url a la cuala puntamos para obtner datos
  * @param {*} options // Solo si deseamos, para obtener un id
- * @returns 
+ * @returns
  */
 
 export async function fetchGet(endpoint, options = {}) {
@@ -54,4 +54,12 @@ export async function fetchPut(endpoint, data) {
   };
 
   return await fetchApi(endpoint, options);
+}
+
+export async function fetchDelete(endpoint, id) {
+  const options = {
+    method: "DELETE",
+  };
+
+  return fetchApi(endpoint + id, options);
 }

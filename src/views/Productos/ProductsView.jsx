@@ -16,9 +16,9 @@ function ProductsView() {
   return (
     <LayoutComponent>
       <div>
-        <div className="flex w-full">
-          <div className="float-right">
-            <Link className="p-2 bg-green-400 float-right mt-4" to="/CreateProduct">Crear producto</Link>
+        <div className=" w-full">
+          <div >
+            <Link className="p-2 bg-green-400 float-right mt-4 text-white text-lg rounded-lg shadow-lg" to="/CreateProduct">Crear producto</Link>
           </div>
 
           <div className="grid gap-4 grid-cols-4 w-full max-w-screen-lg">
