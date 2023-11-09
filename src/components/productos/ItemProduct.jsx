@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { fetchDelete } from "../../logic/ApiHelper";
+import { fetchDelete, fetchPut } from "../../logic/ApiHelper";
 
 const ItemProducto = ({ id, title, description, images }) => {
   const navigate = useNavigate();
@@ -15,6 +15,11 @@ const ItemProducto = ({ id, title, description, images }) => {
     );
   };
 
+  const updateProduc = () => {
+    fetchPut("https://api.escuelajs.co/api/v1/products/", )
+  };
+
+
   return (
     <div className="mt-10 bg-white p-4  flex-1 flex-co rounded-lg shadow-lg">
       <img src={images} alt="product" className="h-12 gap-0" />
@@ -24,10 +29,17 @@ const ItemProducto = ({ id, title, description, images }) => {
         <NavLink to={`/Producto/${id}`}>Ver detalle</NavLink>
       </button>
       <button
-        onClick={deleteProduct}
+        onClick={() => deleteProduct(id)}
         className="w-full mt-4 p-2 shadow-lg rounded-lg text-white bg-red-600"
       >
         Eliminar
+      </button>
+
+      <button
+        onClick={() => updateProduc()}
+        className="w-full mt-4 p-2 shadow-lg rounded-lg text-white bg-red-600"
+      >
+        Modidificar
       </button>
     </div>
   );

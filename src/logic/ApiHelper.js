@@ -48,7 +48,7 @@ export async function fetchPut(endpoint, data) {
   const options = {
     method: "PUT",
     headers: {
-      "Content-type": "application/json",
+      "Content-type": "application/json"
     },
     body: JSON.stringify(data),
   };
@@ -58,7 +58,7 @@ export async function fetchPut(endpoint, data) {
 
 export async function fetchDelete(endpoint, id) {
   const options = {
-    method: "DELETE",
+    method: "DELETE",    
   };
 
   return fetchApi(endpoint + id, options);

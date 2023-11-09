@@ -2,36 +2,30 @@ import React, { useState, useEffect } from "react";
 import { fetchGet, fetchPost } from "../../logic/ApiHelper";
 import { useNavigate } from "react-router-dom";
 
-const CreateProductComponent = () => {
-  const navigate = useNavigate();
+import { useForm } from "react-hook-form";
 
-  const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescripcion] = useState("");
-  const [categoryId, setCategoryId] = useState(0);
+const CreateProductComponent = () => {
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+  } = useForm();
+
   const [listCategories, setListCategories] = useState([]);
 
-  const handleBtnRegistrar = async () => {
-    
-    const dataProduct = {
-      title: title,
-      price: price,
-      description: description,
-      categoryId: categoryId,
-      images: [
-        "https://tse4.mm.bing.net/th?id=OIP.9N5TonKWl78wdJVfDUAkLQHaHa&pid=Api&P=0&h=180",
-      ],
-    };
+  const navigate = useNavigate();
 
-    fetchPost("https://api.escuelajs.co/api/v1/products/", dataProduct).then(
-      (response) => {
-        if (response.id) {
-          alert("Producto registrado con exito");
-          navigate("/productos");
-        }
-      }
-    );
-  };
+  const onHandleSubmit = handleSubmit((data) => {
+    console.log(data);
+    data.images = ["https://placeimg.com/640/480/any"];
+
+    // fetchPost("https://api.escuelajs.co/api/v1/auth/login", data).then(
+    //   (response) => {
+    //     console.log(response);
+    //   }
+    // );
+
+  });
 
   useEffect(() => {
     fetchGet("https://api.escuelajs.co/api/v1/categories").then((response) => {
@@ -40,56 +34,79 @@ const CreateProductComponent = () => {
   }, []);
 
   return (
-    <div className="w-1/4">
+    <form onSubmit={onHandleSubmit} className="w-1/4">
       <div className="flex flex-col mt-4">
         <label className="col-lg" htmlFor="nameProduct">
           Nombre producto
         </label>
+
         <input
-          value={title}
-          onChange={(event) => {
-            setTitle(event.target.value);
-          }}
           type="text"
           placeholder="Nombre producto "
           name="nameProduct"
           className="p-2 shadow-lg rounded-lg relative"
+          {...register("title", {
+            required: { value: true, message: "Ingres el nombre del producto" },
+            minLength: {
+              value: 3,
+              message: "El nombre debe contener minimo 3 caracteres",
+            },
+            maxLength: {
+              value: 10,
+              message: "El nombre debe contener maximo 10 caracteres",
+            },
+          })}
         />
+        {errors.title && (
+          <span className="text-red-600 mt-1">{errors.title.message}</span>
+        )}
       </div>
       <div className="flex flex-col mt-4">
         <label htmlFor="priceProduct">Precio producto</label>
         <input
-          value={price}
-          onChange={(event) => {
-            setPrice(event.target.value);
-          }}
-          type="text"
+          type="number"
           placeholder="Precio producto"
           name="priceProduct"
           className="p-2 shadow-lg rounded-lg relative"
+          {...register("price", {
+            required: { value: true, message: "Ingrese precio del producto" },
+            type: { value: Number, message: "Este campo debe ser numerico" },
+          })}
         />
+        {errors.price && (
+          <span className="text-red-600 mt-1">{errors.price.message}</span>
+        )}
       </div>
       <div className="flex flex-col mt-4">
         <label htmlFor="priceProduct">Descripción</label>
         <input
-          value={description}
-          onChange={(event) => {
-            setDescripcion(event.target.value);
-          }}
           type="text"
           placeholder="Descripción"
           name="Descripcion"
           className="p-2 shadow-lg rounded-lg relative"
+          {...register("description", {
+            required: { value: true, message: "La descripcion es requrida" },
+            minLength: {
+              value: 10,
+              message: "Debe contener minimo 11 caracteres",
+            },
+          })}
         />
+        {errors.description && (
+          <span className="text-red-600 mt-1">
+            {errors.description.message}{" "}
+          </span>
+        )}
       </div>
       <div className="flex flex-col mt-4">
         <label htmlFor="priceProduct">Categoria</label>
 
         <select
           className="p-2 shadow-lg rounded-lg relative"
-          onChange={(event) => {
-            setCategoryId(event.target.value);
-          }}
+          {...register("categoryId", {
+            required: true,
+            type: Number,
+          })}
         >
           {listCategories.map((category) => (
             <option key={category.id} value={category.id}>
@@ -99,13 +116,10 @@ const CreateProductComponent = () => {
         </select>
       </div>
 
-      <button
-        onClick={handleBtnRegistrar}
-        className="p-2 rounded-lg bg-green-400 text-white mt-6 mb-10 w-full"
-      >
+      <button className="p-2 rounded-lg bg-green-400 text-white mt-6 mb-10 w-full">
         Registrar producto
       </button>
-    </div>
+    </form>
   );
 };
 
