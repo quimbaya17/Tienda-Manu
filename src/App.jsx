@@ -1,38 +1,37 @@
-//Archivo raiz del proyecto, punto de partida de nuestra aplicación
-// IMPORTAMOS LAS FUNCIONES NECESARIAS PARA PODER EMPAQUETAR NUESTRAS RUTAS
-// Y PODER REALIZAR LAS DIFERENTES NAVEGACION
-import "./App.css";
-import { BrowserRouter, useRoutes } from "react-router-dom";
-import NavBarComponent from "./components/base/NavBarComponent";
-import FooterComponent from "./components/base/FooterComponent";
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NavBarComponent from './components/base/NavBarComponent';
+import FooterComponent from './components/base/FooterComponent';
 
-//Importamos las vistas o paginas que deseamos retornar para cada una de las rutas creadas
-import ProductsView from "./views/Productos/ProductsView";
-import DetailProductView from "./views/Productos/DetailProductView";
-import CategoriesView from "./views/Categories/CategoriesView";
-import ProfileView from "./views/Profile/ProfileView";
-import CreateProductView from "./views/Productos/CreateProductView";
-//CREAMOS LAS RUTAS EN UNA FUNCION QUE NOS RETORNA CADA UNA DE LAS RUTAS QUE QUEREMOS
-//DEFINIR PARA NUESTRO PROYECTO
+const ProductsView = lazy(() => import('./views/Productos/ProductsView'));
+const DetailProductView = lazy(() => import('./views/Productos/DetailProductView'));
+const CategoriesView = lazy(() => import('./views/Categories/CategoriesView'));
+const ProfileView = lazy(() => import('./views/Profile/ProfileView'));
+const CreateProductView = lazy(() => import('./views/Productos/CreateProductView'));
+const UsuariosComponent = lazy(() => import('./views/Usuarios/UsuariosComponent'));
 
 const AppRoutes = () => {
-  let routes = useRoutes([
-    { path: "/", element: "" },
-    { path: "/Productos", element: <ProductsView /> },
-    { path: "/Producto/:id", element: <DetailProductView /> },
-    { path: "/CreateProduct", element: <CreateProductView /> },
-    { path: "/Categorias", element: <CategoriesView /> },
-    { path: "/Usuarios", element: "" },
-    { path: "/Perfil", element: <ProfileView /> },
-  ]);
-  return routes;
+  return (
+    <Routes>
+      <Route path="/" element={<div />} />
+      
+      <Route path="/Productos" element={<ProductsView />} />
+      <Route path="/Producto/:id" element={<DetailProductView />} />
+      <Route path="/CreateProduct" element={<CreateProductView />} />
+      <Route path="/Categorias" element={<CategoriesView />} />
+      <Route path="/Usuarios" element={<UsuariosComponent/>} />
+      <Route path="/Perfil" element={<ProfileView />} />
+    </Routes>
+  );
 };
 
 function App() {
   return (
     <BrowserRouter>
       <NavBarComponent />
-      <AppRoutes />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AppRoutes />
+      </Suspense>
       <FooterComponent />
     </BrowserRouter>
   );
